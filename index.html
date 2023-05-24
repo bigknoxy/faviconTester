@@ -2,40 +2,36 @@
 <html>
 <head>
 	<title>Example HTML Page</title>
-	<link rel="icon" href="./favicons/Board1.svg">
+	<link rel="icon" href="favicon.ico">
 </head>
 <body>
-	<select id="favicons">
-		<option value="">--Select a Favicon--</option>
-	</select>
+	<input type="file" id="file-input" multiple>
+	<div id="preview"></div>
 
 	<script type="text/javascript">
-		var select = document.getElementById("favicons");
-		var folder = "./favicons/";
-		var fileextension = ".svg";
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", folder);
-		xhr.onload = function() {
-			if (xhr.status === 200) {
-				var files = xhr.responseText.split("\n");
-				for (var i = 0; i < files.length; i++) {
-					if (files[i].indexOf(fileextension) !== -1) {
-						var option = document.createElement("option");
-						option.value = folder + files[i];
-						option.text = files[i].replace(fileextension, "");
-						select.add(option);
-					}
+		var fileInput = document.getElementById("file-input");
+		var preview = document.getElementById("preview");
+
+		fileInput.addEventListener("change", function() {
+			while (preview.firstChild) {
+				preview.removeChild(preview.firstChild);
+			}
+
+			var files = fileInput.files;
+			for (var i = 0; i < files.length; i++) {
+				var file = files[i];
+				if (!file.type.startsWith("image/")) {
+					continue;
 				}
+
+				var reader = new FileReader();
+				reader.onload = function(event) {
+					var dataUri = event.target.result;
+					var link = document.querySelector("link[rel='icon']");
+					link.href = dataUri;
+				};
+				reader.readAsDataURL(file);
 			}
-			else {
-				console.log("Request failed.  Returned status of " + xhr.status);
-			}
-		};
-		xhr.send();
-		
-		select.addEventListener("change", function() {
-			var favicon = select.options[select.selectedIndex].value;
-			document.querySelector("link[rel='icon']").href = favicon;
 		});
 	</script>
 </body>
