@@ -1,38 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Example HTML Page</title>
-	<link rel="icon" href="favicon.ico">
+  <title>Image Uploader</title>
+  <style>
+    #image-preview {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .preview {
+      width: 200px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    .preview img {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+  <link rel="icon" href="path/to/your/favicon.ico" type="image/x-icon">
+  <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 </head>
 <body>
-	<input type="file" id="file-input" multiple>
-	<div id="preview"></div>
+  <input type="file" id="image-upload" multiple>
+  <div id="image-preview"></div>
 
-	<script type="text/javascript">
-		var fileInput = document.getElementById("file-input");
-		var preview = document.getElementById("preview");
+  <script>
+    function handleImageUpload(event) {
+      const fileList = event.target.files;
+      const previewContainer = document.getElementById('image-preview');
 
-		fileInput.addEventListener("change", function() {
-			while (preview.firstChild) {
-				preview.removeChild(preview.firstChild);
-			}
+      // Clear previous previews
+      previewContainer.innerHTML = '';
 
-			var files = fileInput.files;
-			for (var i = 0; i < files.length; i++) {
-				var file = files[i];
-				if (!file.type.startsWith("image/")) {
-					continue;
-				}
+      // Iterate over the selected files
+      for (let i = 0; i < fileList.length; i++) {
+        const file = fileList[i];
+        const reader = new FileReader();
 
-				var reader = new FileReader();
-				reader.onload = function(event) {
-					var dataUri = event.target.result;
-					var link = document.querySelector("link[rel='icon']");
-					link.href = dataUri;
-				};
-				reader.readAsDataURL(file);
-			}
-		});
-	</script>
+        // Read the file and create a preview image
+        reader.onload = function(event) {
+          const preview = document.createElement('div');
+          preview.className = 'preview';
+
+          const image = document.createElement('img');
+          image.src = event.target.result;
+          
+          // Add click event listener to set the clicked image as favicon
+          image.addEventListener('click', function() {
+            const favicon = document.querySelector('link[rel="icon"]');
+            favicon.href = image.src;
+          });
+
+          preview.appendChild(image);
+          previewContainer.appendChild(preview);
+        }
+
+        // Read the file as a URL
+        reader.readAsDataURL(file);
+      }
+    }
+
+    const fileInput = document.getElementById('image-upload');
+    fileInput.addEventListener('change', handleImageUpload);
+  </script>
 </body>
 </html>
