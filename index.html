@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Example HTML Page</title>
+	<link rel="icon" href="./favicons/Board1.svg">
+</head>
+<body>
+	<select id="favicons">
+		<option value="">--Select a Favicon--</option>
+	</select>
+
+	<script type="text/javascript">
+		var select = document.getElementById("favicons");
+		var folder = "./favicons/";
+		var fileextension = ".svg";
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", folder);
+		xhr.onload = function() {
+			if (xhr.status === 200) {
+				var files = xhr.responseText.split("\n");
+				for (var i = 0; i < files.length; i++) {
+					if (files[i].indexOf(fileextension) !== -1) {
+						var option = document.createElement("option");
+						option.value = folder + files[i];
+						option.text = files[i].replace(fileextension, "");
+						select.add(option);
+					}
+				}
+			}
+			else {
+				console.log("Request failed.  Returned status of " + xhr.status);
+			}
+		};
+		xhr.send();
+		
+		select.addEventListener("change", function() {
+			var favicon = select.options[select.selectedIndex].value;
+			document.querySelector("link[rel='icon']").href = favicon;
+		});
+	</script>
+</body>
+</html>
