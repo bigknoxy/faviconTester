@@ -1,26 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Image Uploader</title>
+  <title>Favicon Tester</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    p {
+      color: #666;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    #image-upload {
+      display: block;
+      margin: 0 auto;
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      outline: none;
+    }
+    
     #image-preview {
       display: flex;
       flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
     }
+    
     .preview {
       width: 200px;
       margin: 10px;
       cursor: pointer;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
     }
+    
+    .preview:hover {
+      transform: scale(1.05);
+    }
+    
     .preview img {
       width: 100%;
       height: auto;
     }
   </style>
   <link rel="icon" href="path/to/your/favicon.ico" type="image/x-icon">
-  <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 </head>
 <body>
+  <h1>Favicon Tester</h1>
+  <p>Select multiple images from your computer and see them displayed below. Click on an image to set it as the favicon for this browser tab:</p>
   <input type="file" id="image-upload" multiple>
   <div id="image-preview"></div>
 
